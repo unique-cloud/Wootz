@@ -1,0 +1,11 @@
+1. 需要重新检查Token都有哪些
+
+2. 是否要考虑参数的顺序会变
+
+3. 查阅文档完善layer的参数
+
+4. param参数是不是只能出现在convolution layer中, 能出现几次? (GoogleNet中有看见出现两次的例子)
+
+5. name是否要严格遵守letter/letter的语法格式
+
+6. parser出错后并没有立刻停止,返回时token指向的对象不是出错的那个

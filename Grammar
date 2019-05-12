@@ -1,0 +1,113 @@
+<prototxt> --> <name> <input_def> <layers>          FIRST_PLUS = { name }                                                      
+
+<input_def> --> <input> <input_shape_def>           FIRST_PLUS = { input }
+<input_shape_def> --> input_shape left_brace <input_shape_opt> right_brace      FIRST_PLUS = { input_shape }
+<input_shape_opt> --> <dim> <dim> <dim> <dim>       FIRST_PLUS = { dim }
+
+<layers> --> <layer_def> <layers>       FIRST_PLUS = { layer } 
+            | EMPTY                     FIRST_PLUS = { eof }
+
+<layer_def> --> layer left_brace <layer_opt> right_brace        FIRST_PLUS = { layer }
+
+<layer_opt> --> <name> <layer_type> <bottom> <bottoms> <top> <params>     FIRST_PLUS = { name }    
+<bottoms> --> <bottom> <bottoms>        FIRST_PLUS = { bottom }                                                
+                      | EMPTY           FIRST_PLUS = { top }
+
+<params> --> <param> <layer_param>                 FIRST_PLUS = { param }
+<layer_param> --> <convolution_def>                FIRST_PLUS = { convolution_param }
+               | <batch_norm_def>                  FIRST_PLUS = { batch_norm_param }
+               | <scale_def>                       FIRST_PLUS = { scale_param }
+               | <pooling_def>                     FIRST_PLUS = { pooling_param }
+               | <dropout_def>                     FIRST_PLUS = { dropout_param }
+               | <reshape_def>                     FIRST_PLUS = { reshape_param }
+               | <inner_product_def>               FIRST_PLUS = { inner_product_param }
+               | EMPTY                             FIRST_PLUS = { right_brace }
+
+<param> --> <param_def> <param>         FIRST_PLUS = { param }
+           | EMPTY                      FIRST_PLUS = { convolution_param, 
+                                                   batch_norm_param,
+                                                   scale_param,
+                                                   pooling_param,
+                                                   dropout_param,
+                                                   reshape_param,
+                                                   inner_product_param,
+                                                   right_brace,}
+                                        
+<param_def> --> param left_brace <lr_mult> <decay_mult> right_brace                     FIRST_PLUS = { param }
+<convolution_def> --> convolution_param left_brace <convolution_opt> right_brace        FIRST_PLUS = { convolution_param }
+<batch_norm_def> --> batch_norm_param left_brace <batch_norm_opt> right_brace           FIRST_PLUS = { batch_norm_param }
+<scale_def> --> scale_param left_brace <scale_opt> right_brace                          FIRST_PLUS = { scale_param }     
+<pooling_def> --> pooling_param left_brace <pooling_opt> right_brace                    FIRST_PLUS = { pooling_param }
+<dropout_def> --> dropout_param left_brace <dropout_opt> right_brace                    FIRST_PLUS = { dropout_param }
+<reshape_def> --> reshape_param left_brace <reshape_opt> right_brace                    FIRST_PLUS = { reshape_param }
+<inner_product_def> --> inner_product_param left_brace <inner_product_opt> right_brace        FIRST_PLUS = { inner_product_param }
+
+<convolution_opt> --> <bias_term> <num_output> <convolution_opt_tail>       FIRST_PLUS = { bias_term }
+<convolution_opt_tail> --> <pad> <kernel_size> <stride> <group> <weight_filler_def> <bias_filler_def>       FIRST_PLUS = { pad }
+                          | <stride> <group> <weight_filler_def> <bias_filler_def> <pads> <kernels>                           FIRST_PLUS = { stride }
+<pads> --> <pad_h> <pad_w>              FIRST_PLUS = { pad_h }
+<kernels> --> <kernel_h> <kernel_w>     FIRST_PLUS = { kernel_h }
+
+<batch_norm_opt> --> <use_global_stats> <eps>       FIRST_PLUS = { use_global_stats }
+<scale_opt> --> <bias_term>     FIRST_PLUS = { bias_term }
+<pooling_opt> --> <pool> <pooling_opt_tail>     FIRST_PLUS = { pool }
+
+<pooling_opt_tail> --> <kernel_size> <stride> <pooling_opt_tail_tail>			FIRST_PLUS = { kernel_size }           
+      				  | <pad> <kernel_size> <stride>	  	FIRST_PLUS = { pad } 
+					  | <global_pooling>                    FIRST_PLUS = { global_pooling }	         
+<pooling_opt_tail_tail> --> <pad>       FIRST_PLUS = { pad } 
+                           | EMPTY      FIRST_PLUS = { right_brace }                    
+
+<dropout_opt> --> <dropout_ratio>       FIRST_PLUS = { dropout_ratio }          
+<reshape_opt> --> <shape_def>           FIRST_PLUS = { shape }
+<inner_product_opt> --> <num_output> <weight_filler_def> <bias_filler_def>     FIRST_PLUS = { pool }
+
+<weight_filler_def> --> weight_filler left_brace <weight_filler_opt> right_brace        FIRST_PLUS = { weight_filler }
+<weight_filler_opt> --> <weight_filler_type> <std>                                      FIRST_PLUS = { type }
+<bias_filler_def> --> bias_filler left_brace <bias_filler_opt> right_brace      FIRST_PLUS = { bias_filler }
+                     | EMPTY        FIRST_PLUS = { right_brace, pad_h }
+<bias_filler_opt> --> <bias_filler_type> <value>                                FIRST_PLUS = { type }
+
+<shape_def> --> shape left_brace <shape_opt> right_brace        FIRST_PLUS = { shape }
+<shape_opt> --> <dim> <dim>     FIRST_PLUS = { dim }
+
+<name> --> name colon NAME      FIRST_PLUS = { name }
+<input> --> input colon NAME        FIRST_PLUS = { input }
+<dim> --> dim colon NUMBER      FIRST_PLUS = { dim }
+
+<layer_type> --> type colon TYPE      FIRST_PLUS = { type }
+<bottom> --> bottom colon NAME  FIRST_PLUS = { bottom }
+<top> --> top colon NAME        FIRST_PLUS = { top }
+
+<lr_mult> --> lr_mult colon NUMBER      FIRST_PLUS = { lr_mult }
+<decay_mult> --> decay_mult colon NUMBER        FIRST_PLUS = { decay_mult }
+
+<bias_term> --> bias_term colon BOOL        FIRST_PLUS = { bias_term }
+               | EMPTY                      FIRST_PLUS = { num_output, right_brace}
+<num_output> --> num_output colon NUMBER        FIRST_PLUS = { num_output }
+<pad> --> pad colon NUMBER      FIRST_PLUS = { pad }
+<kernel_size> --> kernel_size colon NUMBER      FIRST_PLUS = { kernel_size }
+
+<use_global_stats> --> use_global_stats colon BOOL      FIRST_PLUS = { use_global_stats }
+<eps> --> eps colon NUMBER      FIRST_PLUS = { eps }
+         | EMPTY                FIRST_PLUS = { right_brace }
+
+<pool> --> pool colon POOLING_METHOD      FIRST_PLUS = { pool }
+<stride> --> stride colon NUMBER        FIRST_PLUS = { stride }
+<global_pooling> --> global_pooling colon BOOL      FIRST_PLUS = { global_pooling }
+
+<dropout_ratio> --> dropout_ratio colon NUMBER      FIRST_PLUS = { dropout_ratio }
+
+<weight_filler_type> --> type colon WEIGHT_FILLER_TYPE      FIRST_PLUS = { type }
+<std> --> std colon NUMBER      FIRST_PLUS = { std }            
+         | EMPTY                FIRST_PLUS = { right_brace }
+<group> --> group colon NUMBER      FIRST_PLUS = { group }
+           | EMPTY                  FIRST_PLUS = { weight_filler }
+
+<bias_filler_type> --> type colon BIAS_FILLER_TYPE      FIRST_PLUS = { type }
+<value> --> value colon NUMBER      FIRST_PLUS = { value }
+
+<pad_h> --> pad_h colon NUMBER          FIRST_PLUS = { pad_h }
+<pad_w> --> pad_w colon NUMBER          FIRST_PLUS = { pad_w }
+<kernel_h> --> kernel_h colon NUMBER    FIRST_PLUS = { kernel_h }
+<kernel_w> --> kernel_w colon NUMBER    FIRST_PLUS = { kernel_w }
