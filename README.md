@@ -1,5 +1,7 @@
 # Wootz
-## A compiler that generate Tensorflow code from prototxt
+## A compiler that generate Tensorflow (slim) code from a Caffe prototxt file
+
+### For full details, please refer to "Compiler_Final_Report.pdf"
 
 Token Language definiation: Please see file "Token Language"
 
@@ -15,9 +17,11 @@ How to run the code?
 
 `
 make
+
 ./main "inception_v1.prototxt"
 `
 
 Requirement packages?
+
 
 No. Just need g++ to compile.
