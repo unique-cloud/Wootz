@@ -13,15 +13,15 @@ Generated code: "alexnet_scale.py", "alexnet_scale_multiplexing.py"
 
 ...
 
-How to run the code?
+### How to run the code?
 
 `
 make
 
 ./main "inception_v1.prototxt"
+
 `
 
-Requirement packages?
-
+### Requirement packages?
 
 No. Just need g++ to compile.
