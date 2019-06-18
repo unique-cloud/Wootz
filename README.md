@@ -15,12 +15,10 @@ Generated code: "alexnet_scale.py", "alexnet_scale_multiplexing.py"
 
 ### How to run the code?
 
-`
-make
+`make`
 
-./main "inception_v1.prototxt"
+`./main "inception_v1.prototxt"`
 
-`
 
 ### Requirement packages?
 
